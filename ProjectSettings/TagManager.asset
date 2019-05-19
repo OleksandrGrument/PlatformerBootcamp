@@ -5,6 +5,14 @@ TagManager:
   serializedVersion: 2
   tags:
   - Ground
+  - Coin
+  - Powerup_Bullet
+  - Breakable
+  - PlayerHead
+  - Water
+  - PlayerFeet
+  - Platform
+  - PlayerStuck
   layers:
   - Default
   - TransparentFX
@@ -15,10 +23,10 @@ TagManager:
   - 
   - 
   - Ground
-  - Collectable
+  - Collectibles
   - Enemies
   - Players
-  - 
+  - Fragments
   - 
   - 
   - 
@@ -43,11 +51,11 @@ TagManager:
     uniqueID: 0
     locked: 0
   - name: Background
-    uniqueID: 868438115
+    uniqueID: 4038073009
     locked: 0
   - name: Foreground
-    uniqueID: 1060984619
+    uniqueID: 3981688371
     locked: 0
   - name: UI
-    uniqueID: 2146881961
+    uniqueID: 2941686653
     locked: 0
