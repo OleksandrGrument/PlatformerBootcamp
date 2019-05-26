@@ -7,11 +7,6 @@ using UnityEngine;
 /// </summary>
 public class PlayerBulletCtrl : MonoBehaviour
 {
-    //1. declare a variable rb of type Rigidbody2D and public Vector2 velocity
-    //2. get the ref to the Rigidbody2D in the Start method
-    //3. assign the velocity in the Update method
-    //4. test
-
     public Vector2 velocity;
     Rigidbody2D rb;
 
@@ -23,5 +18,27 @@ public class PlayerBulletCtrl : MonoBehaviour
     void Update()
     {
         rb.velocity = velocity;
+    }
+
+    void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            GameCtrl.instance.BulletHitEnemy(other.gameObject.transform);
+            Destroy(gameObject);
+        }
+        else if (!other.gameObject.CompareTag("Player"))
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            GameCtrl.instance.BulletHitEnemy(other.gameObject.transform);
+            Destroy(gameObject);
+        }
     }
 }

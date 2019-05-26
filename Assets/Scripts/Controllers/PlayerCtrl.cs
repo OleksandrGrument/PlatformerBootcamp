@@ -118,6 +118,9 @@ public class PlayerCtrl : MonoBehaviour
             rb.AddForce(new Vector2(0, jumpSpeed)); // simply make the player jump in the y axis or upwards
             anim.SetInteger("State", 2);
 
+            // play the jump sound
+            AudioCtrl.instance.PlayerJump(gameObject.transform.position);
+
             Invoke("EnableDoubleJump", delayForDoubleJump);
         }
 
@@ -126,6 +129,9 @@ public class PlayerCtrl : MonoBehaviour
             rb.velocity = Vector2.zero;
             rb.AddForce(new Vector2(0, jumpSpeed)); // simply make the player jump in the y axis or upwards
             anim.SetInteger("State", 2);
+
+            // play the jump sound
+            AudioCtrl.instance.PlayerJump(gameObject.transform.position);
 
             canDoubleJump = false;
         }
@@ -146,6 +152,8 @@ public class PlayerCtrl : MonoBehaviour
             {
                 Instantiate(rightBullet, rightBulletSpawnPos.position, Quaternion.identity);
             }
+
+            AudioCtrl.instance.FireBullets(gameObject.transform.position);
         }
     }
 
@@ -184,30 +192,61 @@ public class PlayerCtrl : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D other)
     {
-       
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            GameCtrl.instance.PlayerDiedAnimation(gameObject);
+
+            AudioCtrl.instance.PlayerDied(gameObject.transform.position);
+        }
+
+        if (other.gameObject.CompareTag("BigCoin"))
+        {
+            GameCtrl.instance.UpdateCoinCount();
+
+            SFXCtrl.instance.ShowBulletSparkle(other.gameObject.transform.position);
+
+            Destroy(other.gameObject);
+
+            GameCtrl.instance.UpdateScore(GameCtrl.Item.BigCoin);
+
+            AudioCtrl.instance.CoinPickup(gameObject.transform.position);
+        }
     }
 
-	void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerEnter2D(Collider2D other)
 	{
         switch (other.gameObject.tag)
         {
             case "Coin":
                 if(sfxOn)
+                {
                     SFXCtrl.instance.ShowCoinSparkle(other.gameObject.transform.position);
+                }
+                GameCtrl.instance.UpdateCoinCount();
+                GameCtrl.instance.UpdateScore(GameCtrl.Item.Coin);
+                AudioCtrl.instance.CoinPickup(gameObject.transform.position);
                 break;
             case "Water":
                 // show the splash effect
                 SFXCtrl.instance.ShowSplash(other.gameObject.transform.position);
 
-                // inform the GameCtrl
+                AudioCtrl.instance.WaterSplash(gameObject.transform.position);
 
                 break;
             case "Powerup_Bullet":
                 canFire = true;
                 Vector3 powerupPos = other.gameObject.transform.position;
+                AudioCtrl.instance.PowerUp(gameObject.transform.position);
                 Destroy(other.gameObject);
                 if (sfxOn)
                     SFXCtrl.instance.ShowBulletSparkle(powerupPos);
+                break;
+            case "Enemy":
+                GameCtrl.instance.PlayerDiedAnimation(gameObject);
+                AudioCtrl.instance.PlayerDied(gameObject.transform.position);
+                break;
+            case "BossKey":
+                GameCtrl.instance.ShowLever();
                 break;
             default:
                 break;

@@ -9,6 +9,7 @@ public class SFXCtrl : MonoBehaviour
 {
     public static SFXCtrl instance;     // allows other scripts to access public methods in this class without making objects of this class
     public SFX sfx;
+    public Transform key0, key1, key2;  // position of the keys in the HUD
 
 	void Awake()
 	{
@@ -32,6 +33,36 @@ public class SFXCtrl : MonoBehaviour
     public void ShowCoinSparkle(Vector3 pos)
     {
         Instantiate(sfx.sfx_coin_pickup, pos, Quaternion.identity);
+    }
+
+    /// <summary>
+    /// shows the enemy explosion effect when the player bullet hits the enemy
+    /// </summary>
+    public void EnemyExplosion(Vector3 pos)
+    {
+        Instantiate(sfx.sfx_enemy_explosion, pos, Quaternion.identity);
+    }
+
+    /// <summary>
+    /// Shows the enemy poof dust particles when the cat jumps on enemy's head
+    /// </summary>
+    /// <param name="pos">Position.</param>
+    public void ShowEnemyPoof(Vector3 pos)
+    {
+        Instantiate(sfx.sfx_playerLandsp, pos, Quaternion.identity);
+    }
+
+    public void ShowKeySparkle(int keyNumber)
+    {
+        Vector3 pos = Vector3.zero;
+        if (keyNumber == 0)
+            pos = key0.position;
+        else if (keyNumber == 1)
+            pos = key1.position;
+        else if (keyNumber == 2)
+            pos = key2.position;
+        
+        Instantiate(sfx.sfx_bullet_pickup, pos, Quaternion.identity);
     }
 
     /// <summary>
@@ -88,5 +119,7 @@ public class SFXCtrl : MonoBehaviour
         Instantiate(sfx.sfx_fragment_2, pos2, Quaternion.identity);
         Instantiate(sfx.sfx_fragment_2, pos3, Quaternion.identity);
         Instantiate(sfx.sfx_fragment_1, pos4, Quaternion.identity);
+
+        AudioCtrl.instance.BreakableCrates(pos);
     }
 }

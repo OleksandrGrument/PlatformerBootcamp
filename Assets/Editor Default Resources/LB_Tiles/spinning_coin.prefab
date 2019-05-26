@@ -87,7 +87,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e3ce11d70aff4878855bc2790574168, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coinFX: 0
+  coinFX: 1
+  speed: 0.09
+  startFlying: 0
 --- !u!212 &212070700313976094
 SpriteRenderer:
   m_ObjectHideFlags: 1
